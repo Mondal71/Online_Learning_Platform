@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true
   },
+  avatar: {
+    type: String,  // cloudinary URL
+    require: true
+  },
   role: {
     type: String,
     enum: ["student", "instructor", "admin"],
