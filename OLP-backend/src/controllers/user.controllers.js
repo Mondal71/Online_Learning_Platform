@@ -6,9 +6,9 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 
 
 const registerUser = asyncHandler(async (req, res) => {
-  res.status(200).json({
-    message: "OK"
-  })
+  // res.status(200).json({
+  //   message: "OK"
+  // })
 
   const { fullName, userName, email, password } = req.body
   console.log("email", email);
@@ -33,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All fields are required")
   }
 
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ userName }, { email }]
   })
 
@@ -41,27 +41,33 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with username or email already exist")
   }
 
-  const avatarPath = req.file.path
+  // const avatarPath = req.file.path
 
-  if (!avatarPath ) {
-    throw new ApiError(400, "Avatar file is required!")
-  }
+  // console.log(avatarPath);
+  
 
-  const avatar = await uploadOnCloudinary(avatarPath)
+  // if (!avatarPath ) {
+  //   throw new ApiError(400, "Avatar file is required!")
+  // }
 
-  if (!avatar) {
-    throw new ApiError(400, "Avatar file is required!");
-  }
+  // const avatar = await uploadOnCloudinary(avatarPath)
+
+  // console.log(avatar);
+  
+
+  // if (!avatar) {
+  //   throw new ApiError(400, "Avatar is required!");
+  // }
   
 
   const user = await User.create({
     fullName,
-    avatar: avatar.url,
     email,
-    password,
     userName: userName.toLowerCase(),
+    password,
     role: "student",
     isBlocked: false,
+    // avatar: avatar.url,
   });
 
   const userCreated = await User.findById(user._id).select(
