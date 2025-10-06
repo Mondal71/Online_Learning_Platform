@@ -1,12 +1,9 @@
-import { Router } from "express"
-import { registerUser } from "../controllers/user.controllers.js"
-import { upload } from "../middlewares/multer.middlewares.js"
+import { Router } from "express";
+import { registerUser } from "../controllers/user.controllers.js";
+import { upload } from "../middlewares/multer.middlewares.js";
 
-const router = Router()
+const router = Router();
 
-router.route("/register").post(
-  upload.single("avatar"),
-  registerUser
-)
+router.route("/register").post(registerUser);
 
-export default router
+export default router;
