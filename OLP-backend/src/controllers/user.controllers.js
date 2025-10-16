@@ -12,17 +12,17 @@ const registerUser = asyncHandler(async (req, res) => {
   const { fullName, userName, email, password } = req.body;
   console.log("email", email);
 
-  // if (fullName === "") {
-  //   throw new ApiError(400, "Full name is required!")
-  // }else if (userName === "") {
-  //   throw new ApiError(400, "Username is required!")
-  // }else if (email === "") {
-  //   throw new ApiError(400, "email is required!")
-  // }else if (password === "") {
-  //   throw new ApiError(400, "password is required!")
-  // }
+//   // if (fullName === "") {
+//   //   throw new ApiError(400, "Full name is required!")
+//   // }else if (userName === "") {
+//   //   throw new ApiError(400, "Username is required!")
+//   // }else if (email === "") {
+//   //   throw new ApiError(400, "email is required!")
+//   // }else if (password === "") {
+//   //   throw new ApiError(400, "password is required!")
+//   // }
 
-  //************** Another way to write this */
+//   //************** Another way to write this */
 
   if (
     [fullName, userName, email, password].some((field) => field?.trim() === "")
@@ -38,21 +38,21 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(409, "User with username or email already exist");
   }
 
-  // const avatarPath = req.file.path
+  const avatarPath = req.file?.avatar?.path
 
-  // console.log(avatarPath);
+  console.log(avatarPath);
 
-  // if (!avatarPath ) {
-  //   throw new ApiError(400, "Avatar file is required!")
-  // }
+  if (!avatarPath ) {
+    throw new ApiError(400, "Avatar path is required!")
+  }
 
-  // const avatar = await uploadOnCloudinary(avatarPath)
+  const avatar = await uploadOnCloudinary(avatarPath)
 
-  // console.log(avatar);
+  console.log(avatar);
 
-  // if (!avatar) {
-  //   throw new ApiError(400, "Avatar is required!");
-  // }
+  if (!avatar) {
+    throw new ApiError(400, "Avatar file is required!");
+  }
 
   const user = await User.create({
     fullName,
@@ -61,7 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     role: req.body.role || "student",
     isBlocked: false,
-    // avatar: avatar.url,
+    avatar: avatar.url,
   });
 
   const userCreated = await User.findById(user._id).select(
